@@ -17,7 +17,7 @@ public class Component {
 	private boolean application;
 	
 	/**
-	 * O CAC como componente 
+	 * Construtor de Componente 
 	 * @param id Nome simbolico
 	 * @param application True se estiver em uso e False se não estiver em uso 
 	 */
@@ -26,7 +26,7 @@ public class Component {
 	}
 	
 	/**
-	 * O CAC como componente
+	 * Construtor de Componente
 	 * @param id Nome simbolico
 	 * @param application True se estiver em uso e False se não estiver em uso 
 	 * @param observableContext Tipo de informação contextual

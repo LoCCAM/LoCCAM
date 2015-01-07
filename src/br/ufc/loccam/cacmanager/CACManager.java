@@ -36,8 +36,7 @@ import br.ufc.loccam.isensor.ISensor;
 
 public class CACManager implements ICACManager {
 
-	private static CACManager instance = null;
-	
+	private static CACManager instance = null;	
 	private Felix felix;
 	
 	@SuppressWarnings("rawtypes")
@@ -47,9 +46,7 @@ public class CACManager implements ICACManager {
     private static File cacheDir;
 
     private IPublisher sysSU;
-
-    private Context context;
-    
+    private Context context;    
  	private Map<String, List<Component>> availableCACs;
  	
  	// File observer que verifica quais CACs estï¿½o disponï¿½veis no diretï¿½rio dos CACs
@@ -57,6 +54,11 @@ public class CACManager implements ICACManager {
  	
 	private String TAG = "CACManager";
 	
+	/**
+	 * Retorna uma instância do CACManager.
+	 * @param context Contexto em que for inserido (utilizado no SysSUService).
+	 * @return Instância do CACManager.
+	 */
 	public static CACManager getInstance(Context context) {
 		if(instance == null)
 			instance = new CACManager(context);
@@ -64,10 +66,18 @@ public class CACManager implements ICACManager {
 		return instance;
 	}
 	
+	/**
+	 * Retorna o diretorio do cache dos Bundles.
+	 * @return String contendo o diretorio.
+	 */
 	public static File getCacheDir(){
 		return cacheDir;
 	}
 	
+	/**
+	 * Gerencia o ciclo de vida dos CACs.
+	 * @param context Contexto em que for inserido (utilizado no SysSUService).
+	 */
 	private CACManager(Context context) {
 		this.context = context;
 		
@@ -75,7 +85,7 @@ public class CACManager implements ICACManager {
 		System.out.println(SDCardsPath);
 		
 		// Creates felix cache dir
-		cacheDir = context.getDir("felixCache", 0);
+		cacheDir = context.getApplicationContext().getDir("felixCache", 0);
 		
 //        cacheDir = new File( SDCardsPath + FelixConfig.CACHE_PATH );
 //        if (!cacheDir.exists()) {
@@ -89,6 +99,7 @@ public class CACManager implements ICACManager {
     		Properties felixProperties = new FelixConfig(SDCardsPath).getConfigProps();
             // Creates an instance of the framework with our configuration properties.
             felix = new Felix(felixProperties);
+
             // Starts Felix instance.
             felix.start();
             
@@ -147,6 +158,10 @@ public class CACManager implements ICACManager {
         fileObserver.startWatching();
 	}
 
+	/**
+	 * Inicia um CAC.
+	 * @param CAC.
+	 */
 	public void startCAC(Component cac) {
 		Log.d(TAG, "starting CAC " + cac.getId());
 		
@@ -168,6 +183,10 @@ public class CACManager implements ICACManager {
 		}
 	}
 
+	/**
+	 * Para um CAC.
+	 * @param CAC.
+	 */
 	public void stopCAC(Component cac) {
 		Log.d(TAG, "stopping CAC " + cac.getId());
 		
@@ -189,6 +208,10 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Instala um CAC ao LoCCAM.
+	 * @param CAC.
+	 */
 	public void installCAC(Component cac) {
 		Log.d(TAG, "installing CAC " + cac.getFileName());
 		
@@ -220,6 +243,10 @@ public class CACManager implements ICACManager {
 		} 
 	}
 	
+	/**
+	 * Desinstala um CAC do LoCCAM.
+	 * @param CAC.
+	 */
 	public void uninstallCAC(Component cac) {
 		Log.d(TAG, "uninstalling CAC " + cac.getId());
 		
@@ -240,12 +267,16 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Retorna uma lista de CACs disponiveis.
+	 * @return Map contendo uma lista de CACs.
+	 */
 	public Map<String, List<Component>> getListOfAvailableCACs() {
 		return availableCACs;
 	}
 	
 	/**
-	 * Mï¿½todo que garante que a instï¿½ncia de ISensor dentro de um bundle OSGi ï¿½ iniciada juntamente com o bundle.
+	 * Método que garante que a instância de ISensor dentro de um bundle OSGi é iniciada juntamente com o bundle.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initServiceTracker() {
@@ -293,7 +324,7 @@ public class CACManager implements ICACManager {
 	}
 	
 	/**
-	 * Mï¿½todo que verifica todos os CACs disponï¿½veis no diretï¿½rio de repositï¿½rio local e os adiciona ï¿½ lista availableCACs
+	 * Método que adiciona todos os CACs disponíveis do repositório local do dispositivo.
 	 */
 	private void discoverCACsFromLocalRepositoty() {
 		File[] files = availableBundlesDir.listFiles();
@@ -307,6 +338,10 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Adiciona o CAC a lista de CACs disponiveis.
+	 * @param CAC.
+	 */
 	private void addAvailableCAC(Component cac) {
 		// Verifica se jï¿½ existe uma lista com componentes desse tipo e cria uma caso nï¿½o exista
 		List<Component> componentes = availableCACs.get(cac.getContextProvided());
@@ -325,6 +360,11 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Retira informações do arquivo .jar passado como parametro para configurar o CAC.
+	 * @param file - Arquivo .Jar.
+	 * @return CAC.
+	 */
 	private Component readJar(File file) {
 		Component cac = null;
 		String contextKey;
@@ -356,6 +396,9 @@ public class CACManager implements ICACManager {
 		return cac;
 	}
 	
+	/**
+	 * Remove todos os Bundles.
+	 */
 	public void removeAllBundles() {
 		Bundle[] bundles = felix.getBundleContext().getBundles();
 		
@@ -375,6 +418,9 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Para todos os CACs.
+	 */
 	public void stopAllCAC() {
 		Map<String, List<Component>> list = getListOfAvailableCACs();
 		for(String key: list.keySet()) {
@@ -383,6 +429,11 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Busca um Bundle.
+	 * @param cac - CAC a ser buscado.
+	 * @return Bundle se for encontrado, null caso contrário.
+	 */
 	private Bundle findBundle(Component cac) {
 		Bundle[] bundles = felix.getBundleContext().getBundles();
 		long bundleId = -1;
@@ -393,13 +444,13 @@ public class CACManager implements ICACManager {
 			}
 		}
 		
-		Bundle bundle = felix.getBundleContext().getBundle(bundleId);
-		
+		Bundle bundle = felix.getBundleContext().getBundle(bundleId);		
 		return bundle;
 	}
 	
-	/*
-	 *  TESTE * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+	/**
+	 * Mostra o estado dos Bundles.
+	 * @param v View da app.
 	 */
 	public void configurationTest(View v) {
 		Bundle[] bundles = felix.getBundleContext().getBundles();
@@ -412,6 +463,10 @@ public class CACManager implements ICACManager {
 		}
 	}
 	
+	/**
+	 * Mostra o estado dos Bundles.
+	 * @return String contendo o estado dos Bundles.
+	 */
 	public String printBundlesState() {
 		String r = "";
 		Bundle[] bundles = felix.getBundleContext().getBundles();

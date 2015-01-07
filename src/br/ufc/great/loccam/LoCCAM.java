@@ -21,10 +21,10 @@ public class LoCCAM implements IAdaptationReasonerObserver {
 	private InterestRemovedReaction removedReaction;
 	
 	/**
-	 * Construtor do LoCCAM, que recebe uma instancia do CACManager e AdaptationReasoner, configurando para escutar mudanças nas ZO e ZI desejadas.
-	 * @param localDomain Dominio local
-	 * @param cacManager Gerenciador de CAC
-	 * @param adaptationReasoner Reage a toda adaptação
+	 * Construtor do LoCCAM, que recebe uma instância do Dominio Local do SysSU, CACManager e AdaptationReasoner
+	 * @param localDomain instância Dominio local do SysSU
+	 * @param cacManager instância do CACManager
+	 * @param adaptationReasoner instância do AdaptationReasoner
 	 */
 	public LoCCAM(ILocalDomain localDomain, ICACManager cacManager, IAdaptationReasoner adaptationReasoner) {
 		this.cacManager = cacManager;
@@ -44,6 +44,9 @@ public class LoCCAM implements IAdaptationReasonerObserver {
 		}
 	}
 	
+	/**
+	 * Observador para a mudança da zona de observação. Os parametros são os componentes para add e remover da zona
+	 */
 	@Override
 	public void notifyObservableZoneChanged(Component[] addedComponents, Component[] removedComponents) {
 		// Inicia os CACs de acordo com a nova zona de interesse desejada
@@ -154,7 +157,7 @@ public class LoCCAM implements IAdaptationReasonerObserver {
 	}
 	
 	/**
-	 * Retorna o estado do LoCCAM, tanto do gerenciador de cac como do adaptador	
+	 * Retorna o estado do LoCCAM, tanto do CACManager como do AdaptationReasoner	
 	 * @return Uma string contento as informações do estado.
 	 */
 	public String printState() {

@@ -2,16 +2,11 @@ package br.ufc.great.loccam.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import android.app.ActivityManager;
 import android.app.Service;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import br.ufc.great.download.CACDownload;
@@ -25,10 +20,13 @@ import br.ufc.great.syssu.base.interfaces.IFilter;
 import br.ufc.great.syssu.base.interfaces.ILocalDomain;
 import br.ufc.great.syssu.base.interfaces.ISysSUService;
 import br.ufc.great.syssu.ubibroker.LocalUbiBroker;
-import br.ufc.loccam.adaptation.model.Component;
 import br.ufc.loccam.adaptation.reasorner.AdaptationReasoner;
 import br.ufc.loccam.cacmanager.CACManager;
 
+/**
+ * Service do LoCCAM
+ *
+ */
 public class SysSUService extends Service {
 
 	private LocalUbiBroker localUbiBroker;
@@ -64,7 +62,10 @@ public class SysSUService extends Service {
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return new ISysSUService.Stub() {
-			
+			/**
+			 * Método utilizado para colocar o interesse da aplicação.
+			 * @param tuple Contendo o Id da App e a Context-Key.
+			 */			
 			public void put(Tuple tuple) throws RemoteException {
 				try {
 					domain.put(tuple, null);
@@ -152,14 +153,14 @@ public class SysSUService extends Service {
 
 			@Override
 			public void removeApp(String arg0) throws RemoteException {
-				list.remove(arg0);
+				if(list.contains(arg0))
+					list.remove(arg0);
 				isToStopLoCCAM();
 			}
 		};
 	}
 	
-	public void isToStopLoCCAM() {
-		System.out.println(list);
+	private void isToStopLoCCAM() {
 		if(list.isEmpty())
 			stopSelf();
 	}

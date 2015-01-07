@@ -29,6 +29,14 @@ public class Publisher implements IPublisher{
 		}
 	}
 	
+	/**
+	 * Método para colocar a tupla do tipo String no espaço de tuplas
+	 * @param contextData Context-Key.
+	 * @param source Fonte da informação (Fisico, Logico, Virtual).
+	 * @param values O valor da informação contextual.
+	 * @param accuracy Acuracia.
+	 * @param timestamp O instante em que a informação foi publicada.
+	 */
 	public void putString(String contextData, String source, List<String> values, String accuracy, String timestamp) {		
 		// Retira a tupla com o valor anterior
 		Pattern pattern = (Pattern) new Pattern()
@@ -58,6 +66,14 @@ public class Publisher implements IPublisher{
 		}
 	}
 
+	/**
+	 * Método para colocar a tupla do tipo Object no espaço de tuplas
+	 * @param contextData Context-Key.
+	 * @param source Fonte da informação (Fisico, Logico, Virtual).
+	 * @param values O valor da informação contextual.
+	 * @param accuracy Acuracia.
+	 * @param timestamp O instante em que a informação foi publicada.
+	 */	
 	public void put(String contextData, String source, List<Object> values, String accuracy, String timestamp) {		
 		// Retira a tupla com o valor anterior
 		Pattern pattern = (Pattern) new Pattern()
@@ -87,6 +103,11 @@ public class Publisher implements IPublisher{
 		}
 	}
 	
+	/**
+	 * Remove o interesse de uma informação contextual.
+	 * @param contextData Context-Key.
+	 * @return True se conseguir remover o interesse, false caso contrário.
+	 */
 	public boolean remove(String contextData){
 		Pattern pattern = (Pattern) new Pattern()
 		.addField("ContextKey", contextData)
@@ -104,6 +125,11 @@ public class Publisher implements IPublisher{
 		return false;
 	}
 
+	/**
+	 * Método síncrono, que retorna uma tupla que contem a informação contextual passada como parametro.
+	 * @param contextData Context-Key.
+	 * @return Uma lista de tuplas.
+	 */
 	public List<Tuple> read(String contextData) {
 		Pattern pattern = (Pattern) new Pattern()
 		.addField("ContextKey", contextData)
@@ -123,6 +149,13 @@ public class Publisher implements IPublisher{
 		return list;
 	}
 
+	/**
+	 * Método assíncrono, que faz a subscrição de uma informação contextual, notificando sempre que uma nova informação contextual
+	 * for colocado no espaço de tuplas.
+	 * @param reaction Reaction que receberá a informação.
+	 * @param event Evento: put, take, ...
+	 * @param key Context-Key.
+	 */
 	public void subscribe(IReaction reaction, String event, String key) {
 		try {
 			reaction.setId(domain.subscribe(reaction, event, key));

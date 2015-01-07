@@ -6,12 +6,16 @@ import java.util.List;
 import br.ufc.great.syssu.base.Tuple;
 import br.ufc.loccam.adaptation.model.Component;
 
+/**
+ * Classe para analise das Tuplas
+ * 
+ */
 public class TupleParser {
 
 	/**
-	 * Cria uma lista de aplicações com suas zonas de interesse de acordo com os interesses registrados no SysSU
-	 * @param tuples - Tuplas de interesse registradas no SysSU
-	 * @return Lista das aplicações que possuem seus interesses registrados no SysSU
+	 * Retorna uma lista de componentes que contém os interesses publicados no SysSU
+	 * @param tuples - Lista contendo a tuplas de interesse no SysSU
+	 * @return A lista de componentes
 	 */
 	public static List<Component> parseToApplications(List<Tuple> tuples) {
 		ArrayList<Component> applications = new ArrayList<Component>();
@@ -24,10 +28,10 @@ public class TupleParser {
 	}
 	
 	/**
-	 * Adiciona um novo interesse em uma aplicação. Caso a aplicação ainda não exista, ela será criada e adicionada a lista.
-	 * @param applications - lista de todas as aplicações registradas no LoCCAM
-	 * @param tuple - tupla com a informação da nova zona de interesse
-	 * @return Lista das aplicações registradas
+	 * Adiciona um novo interesse a um componente. Caso o componente não exista, ele será criado com esse interesse.
+	 * @param applications - Tista contendo os componentes
+	 * @param tuple - Tupla contendo o interesse
+	 * @return Lista de componentes
 	 */
 	public static List<Component> parseNewInterestToApplication(List<Component> applications, Tuple tuple) {
 		String applicationId = (String)tuple.getField(0).getValue();
@@ -35,7 +39,6 @@ public class TupleParser {
 		
 		for (Component application: applications) {
 			
-			// Se encontrar uma aplicação adiciona o novo interesse e 
 			if(application.getId().equalsIgnoreCase(applicationId)) {
 				application.addInterestZoneElement(contextData);
 				return applications;
@@ -49,13 +52,11 @@ public class TupleParser {
 		return applications;
 	}
 	
-	
-	// TODO : Verificar no reasoning  qual comportamento ocorre quando aplicação não possui mais interesses
 	/**
-	 * Retira o interesse de uma aplicação. Caso a aplicação não possua mais interesses ela é removida da lista
-	 * @param applications - lista de todas as aplicações registradas no LoCCAM
-	 * @param tuple - tupla com a informação da nova zona de interesse
-	 * @return lista das aplicações registradas
+	 * Retira o interesse de um componente. 
+	 * @param applications - Lista contendo os componentes
+	 * @param tuple - Tupla contendo o interesse
+	 * @return Lista de componentes
 	 */
 	public static List<Component> parseRemovedInterestToApplication(List<Component> applications, Tuple tuple) {
 		Component app = null;
@@ -76,6 +77,5 @@ public class TupleParser {
 		}
 		
 		return applications;
-	}
-	
+	}	
 }

@@ -52,9 +52,10 @@ public class CACDownload {
 	
 	// Automatizaçao da instalação dos CAC's
 	/**
-	 * Faz o download de cada CAC que estiver na lista, se este estiver no repositório,
-	 * e em seguida instala cada um na pasta padrão. 
-	 * @param names Lista contendo os nomes dos CAC's
+	 * Faz o download no repositorio dos CACs que estiverem na lista 
+	 * e em seguida instala cada um na pasta padrão. É necessário que 
+	 * o dispositivo aceite pelo menos umas das versões dos CACs que tiverem no repositorio.  
+	 * @param names Lista contendo as context-key dos CAC's
 	 */
 	@SuppressLint("DefaultLocale")
 	public void instalarCACs(List<String> names) {

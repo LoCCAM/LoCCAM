@@ -13,7 +13,6 @@ import br.ufc.loccam.cacmanager.CACManager;
  * I build up properties object hard coded for now
  * @author romulogmlima
  */
-
 public class FelixConfig {
 
 	public static final String AVAILABLE_BUNDLES_PATH = "/felix/availablebundles"; 
@@ -63,6 +62,8 @@ public class FelixConfig {
 		// org.osgi.service.http.port=-1
 		// A negative port number has the same effect as setting org.apache.felix.http.enable to false
 		configProps.put("org.osgi.service.http.port", "-1");
+		
+		configProps.put("felix.bootdelegation.implicit", "true");
 		
 	}
 
@@ -159,6 +160,7 @@ public class FelixConfig {
             "android.bluetooth; " +            
             "com.google.android.gms.common; " +
             "com.google.android.gms.location; " +
+            "com.google.android.gms.common.api; " +
             
 			"org.apache.http; " + 
 			"org.apache.http.client; " + 

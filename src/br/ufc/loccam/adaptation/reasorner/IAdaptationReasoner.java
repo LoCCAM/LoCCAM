@@ -2,10 +2,6 @@ package br.ufc.loccam.adaptation.reasorner;
 
 import br.ufc.loccam.adaptation.model.Component;
 
-/**
- * @author Andre
- *
- */
 public interface IAdaptationReasoner {
 
 	/**
@@ -40,8 +36,7 @@ public interface IAdaptationReasoner {
 	 * @return false, caso não seja possível remover o CAC
 	 */
 	public boolean removeAvailableCAC(String symbolicName, String observableContext);
-	
-	
+		
 	/**
 	 * Adiciona um novo interesse a uma aplicação. Caso a aplicação ainda não exista, ela é criada internamente.
 	 * @param appId

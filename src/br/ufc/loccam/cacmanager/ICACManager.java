@@ -9,31 +9,31 @@ public interface ICACManager {
 
 		/**
 		 * Inicia um CAC.
-		 * @param symbolicName - Symbolic-Name do CAC a ser inicializado
+		 * @param CAC.
 		 */
 		public void startCAC(Component cac);
 
 		/**
 		 * Para um CAC.
-		 * @param symbolicName - Symbolic-Name do CAC a ser parado
+		 * @param CAC.
 		 */
 		public void stopCAC(Component cac);
 		
 		/**
-		 * Instala um bundle baseado no nome do seu arquivo
-		 * @param fileName
+		 * Instala um CAC.
+		 * @param CAC.
 		 */
 		public void installCAC(Component cac);
 		
 		/**
-		 * Desinstala um bundle baseado no seu Symbolic-Name
-		 * @param bundle
+		 * Desinstala um CAC.
+		 * @param CAC.
 		 */
 		public void uninstallCAC(Component cac);
 		
 		/**
-		 * Retorna a lista de todos os componentes CAC disponíveis no repositório local
-		 * @return lista de todos os componentes CAC disponíveis no repositório local
+		 * Retorna a lista de todos os componentes CAC disponíveis no repositório local.
+		 * @return lista de todos os componentes CAC disponíveis no repositório local.
 		 */
 		public Map<String, List<Component>> getListOfAvailableCACs();
 }

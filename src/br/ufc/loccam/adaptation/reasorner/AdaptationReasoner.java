@@ -10,6 +10,10 @@ import java.util.Set;
 import android.util.Log;
 import br.ufc.loccam.adaptation.model.Component;
 
+/**
+ * Utilizado para receber os interesses das aplicações e adaptar, se possivel, o LoCCAM para esses interesses.
+ * 
+ */
 public class AdaptationReasoner implements IAdaptationReasoner {
 
 	private Map<String, List<Component>> availableCACs;
@@ -23,8 +27,8 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	private IAdaptationReasonerObserver reasonerObserver;
 	
 	/**
-	 * Mapea os CAC's disponiveis
-	 * @param availableCACs Lista contendo os CAC's disponisveis
+	 * Construtor do AdaptationReasoner.
+	 * @param availableCACs Lista contendo os CACs disponiveis.
 	 */
 	public AdaptationReasoner(Map<String, List<Component>> availableCACs) {
 		if(availableCACs == null) {
@@ -40,24 +44,24 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	}
 	
 	/**
-	 * Configura para escutar mudanças nas ZO e ZI desejadas geradas pelo reasoner
-	 * @param Interface contendo o observador
+	 * Observador do Reasoner.
+	 * @param Interface contendo o Reasoner.
 	 */
 	public void setReasonerObservable(IAdaptationReasonerObserver reasonerObserver) {
 		this.reasonerObserver = reasonerObserver;
 	}
 	
 	/**
-	 * Adiciona um CAC em modo de uso a uma aplicação
-	 * @param um CAC
+	 * Adiciona um CAC.
+	 * @param CAC.
 	 */
 	public void addApplication(Component application) {
 		addApplication(application, true);
 	}
 
 	/**
-	 * Remove uma aplicação
-	 * @param O nome simbolico
+	 * Remove um CAC.
+	 * @param Nome simbolico do CAC.
 	 */
 	public void removeApplication(String symbolicName) {
 		Component application = getApp(symbolicName);
@@ -72,8 +76,8 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	}
 
 	/**
-	 * Adiciona um CAC 
-	 * @param Um CAC
+	 * Adiciona um CAC à lista de CACs disponiveis.
+	 * @param CAC.
 	 */
 	public void addAvailableCAC(Component cac) {
 		// Verifica se já existe uma lista com componentes desse tipo e cria uma caso não exista
@@ -85,6 +89,11 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 		componentes.add(cac);
 	}
 
+	/**
+	 * Remove um CAC da lista de CACs disponiveis.
+	 * @param symbolicName - Nome simbolico do CAC.
+	 * @param observableContext - Context-Key do CAC. 
+	 */
 	public boolean removeAvailableCAC(String symbolicName, String observableContext) {
 		Component cac = null;
 
@@ -106,10 +115,10 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	}
 	
 	/**
-	 * Adiciona uma nova aplicação à lista de aplicações inscritas no LoCCAM e notifica eventual mudança na zona de observação 
-	 * caso notifyChanges seja true
-	 * @param application - Aplicação que será adicionada
-	 * @param notifyChanges - Variável que determina se uma eventual mudança na zona de obseração desejada deve ser notificada
+	 * Adiciona um CAC.
+	 * @param application - CAC que será adicionado.
+	 * @param notifyChanges - Variável que determina se uma eventual mudança na zona de obseração desejada deve ser notificada.
+	 * se true deseja ser notificado e false se não.
 	 */
 	private void addApplication(Component application, boolean notifyChanges) {
 		boolean succes = putAtGraph(application);
@@ -128,20 +137,19 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	}
 	
 	/**
-	 * Adiciona um componente ao grafo e à zona de observação (observableZone)
-	 * @param component
-	 * @return
+	 * Adiciona um CAC ao grafo.
+	 * @param CAC.
+	 * @return True se foi colocado, false se não foi colocado.
 	 */
 	private boolean putAtGraph(Component component) {
 		return putAtGraph(component, component.getInterestZone());
 	}
 	
 	/**
-	 * Adiciona um componente ao grafo e à zona de observação (observableZone) considerando a zona de interesse passada por 
-	 * parâmetro como sendo do componente
-	 * @param component - Componente que será adicionado
-	 * @param interestZone - Zona de interesse a ser considerada para o componente
-	 * @return
+	 * Adiciona um CAC ao grafo, considerando a zona de interesse passada por parâmetro como sendo do CAC.
+	 * @param component - CAC
+	 * @param interestZone - Zona de interesse a ser considerada para o CAC
+	 * @return True se foi colocado, false se não foi colocado.
 	 */
 	private boolean putAtGraph(Component component, Set<String> interestZone) {
 		if(interestZone != null && !interestZone.isEmpty()) {
@@ -187,8 +195,8 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	}
 	
 	/**
-	 * Retira o componente C e suas dependencias do grafo, caso seja possível.
-	 * @param component - Componente a ser retirado
+	 * Retira o CAC e suas dependencias do grafo, caso seja possível.
+	 * @param CAC.
 	 */
 	private void removeComponentIfPossible(Component component) {
 		// Verifica se o componente não é utilizado por alguem para proseguir com a remoção
@@ -217,6 +225,9 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 		}
 	}
 	
+	/**
+	 * Notifica as mudanças a serem realizadas.	
+	 */
 	public void notifyChangesToObservers() {
 		if(reasonerObserver != null) {
 			Component[] added = new Component[addedComponents.size()];
@@ -293,10 +304,10 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 	}
 	
 	/**
-	 * Encontra o app que corresponde ao appId. Caso não encontre nenhuma app, retorna null.
-	 * @param appId
-	 * @return componente
-	 */
+	 * Encontra um CAC de acordo com o nome simbolico.	
+	 * @param appId - O nome simbolico.
+	 * @return CAC se for encontrado, null caso contrário.
+	 */ 
 	private Component getApp(String appId) {
 		for (Component app : applications) {
 			if(app.getId().equalsIgnoreCase(appId))
@@ -306,6 +317,10 @@ public class AdaptationReasoner implements IAdaptationReasoner {
 		return null;
 	}
 	
+	/**
+	 * Mostra o estado da zona de observação
+	 * @return String contendo o estado da zona de observação
+	 */
 	public String printDesiredOZ() {
 		String r;
 
