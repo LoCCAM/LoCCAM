@@ -1,6 +1,7 @@
 package br.ufc.loccam.ipublisher;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufc.great.syssu.base.Pattern;
@@ -37,7 +38,11 @@ public class Publisher implements IPublisher{
 	 * @param accuracy Acuracia.
 	 * @param timestamp O instante em que a informação foi publicada.
 	 */
-	public void putString(String contextData, String source, List<String> values, String accuracy, String timestamp) {		
+	public void putString(String contextData, String source, List<String> _values, String accuracy, String timestamp) {		
+		// Armazena os valores atuais e depois limpa o array para uma futura reutilização.
+		List<String> values = new ArrayList<String>(_values);
+		_values.clear();
+		
 		// Retira a tupla com o valor anterior
 		Pattern pattern = (Pattern) new Pattern()
 		.addField("ContextKey", contextData)
@@ -74,7 +79,11 @@ public class Publisher implements IPublisher{
 	 * @param accuracy Acuracia.
 	 * @param timestamp O instante em que a informação foi publicada.
 	 */	
-	public void put(String contextData, String source, List<Object> values, String accuracy, String timestamp) {		
+	public void put(String contextData, String source, List<Object> _values, String accuracy, String timestamp) {		
+		// Armazena os valores atuais e depois limpa o array para uma futura reutilização.
+		List<Object> values = new ArrayList<Object>(_values);
+		_values.clear();
+		
 		// Retira a tupla com o valor anterior
 		Pattern pattern = (Pattern) new Pattern()
 		.addField("ContextKey", contextData)
